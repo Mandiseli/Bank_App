@@ -1,7 +1,11 @@
 import os
 
-# Function to create or load user accounts
+#
 def load_user_accounts():
+    """
+      Function to create or load user accounts
+
+    """
     user_accounts = {}
     if os.path.exists('Bank Data.txt'):
         with open('Bank Data.txt', 'r') as file:
@@ -21,7 +25,7 @@ def save_user_accounts(user_accounts):
 def create_account(user_accounts, username, initial_balance):
     user_accounts[username] = initial_balance
     save_user_accounts(user_accounts)
-    print(f"New account created with an initial balance of ${initial_balance}")
+    print(f"New account created with an initial balance of R{initial_balance}")
 
 # Function to perform a deposit and log the transaction
 def deposit(user_accounts, username, amount):
@@ -29,12 +33,12 @@ def deposit(user_accounts, username, amount):
         user_accounts[username] += amount
         save_user_accounts(user_accounts)
         log_transaction(username, "Deposit", amount)
-        print(f"Deposited ${amount}. New balance: ${user_accounts[username]}")
+        print(f"Deposited R{amount}. New balance: R{user_accounts[username]}")
     else:
         print("Account not found. Would you like to create a new account?")
         create_new_account = input("Enter 'yes' to create a new account: ").lower()
         if create_new_account == 'yes':
-            initial_balance = float(input("Enter the initial balance for the new account: $"))
+            initial_balance = float(input("Enter the initial balance for the new account: R"))
             create_account(user_accounts, username, initial_balance)
         else:
             print("Transaction canceled.")
@@ -46,14 +50,14 @@ def withdraw(user_accounts, username, amount):
             user_accounts[username] -= amount
             save_user_accounts(user_accounts)
             log_transaction(username, "Withdrawal", amount)
-            print(f"Withdrew ${amount}. New balance: ${user_accounts[username]}")
+            print(f"Withdrew R{amount}. New balance: R{user_accounts[username]}")
         else:
             print("Insufficient funds.")
     else:
         print("Account not found. Would you like to create a new account?")
         create_new_account = input("Enter 'yes' to create a new account: ").lower()
         if create_new_account == 'yes':
-            initial_balance = float(input("Enter the initial balance for the new account: $"))
+            initial_balance = float(input("Enter the initial balance for the new account: R"))
             create_account(user_accounts, username, initial_balance)
         else:
             print("Transaction canceled.")
@@ -61,7 +65,7 @@ def withdraw(user_accounts, username, amount):
 # Function to log a transaction
 def log_transaction(username, transaction_type, amount):
     with open('transactionlog.txt', 'a') as log_file:
-        log_file.write(f"{username},{transaction_type},${amount}\n")
+        log_file.write(f"{username},{transaction_type},R{amount}\n")
 
 # Main program
 user_accounts = load_user_accounts()
@@ -86,7 +90,7 @@ while True:
         print(f"Account '{username}' not found.")
         create_new_account = input("Account not found. Would you like to create a new account? (yes or no)").lower()
         if create_new_account == 'yes':
-            initial_balance = float(input("Enter the initial balance for the new account: $"))
+            initial_balance = float(input("Enter the initial balance for the new account: R"))
             create_account(user_accounts, username, initial_balance)
         else:
             print("Transaction canceled.")
@@ -94,13 +98,13 @@ while True:
 
     if transaction_type == 'deposit':
         try:
-            amount = float(input("How much would you like to deposit? $"))
+            amount = float(input("How much would you like to deposit? R"))
             deposit(user_accounts, username, amount)
         except ValueError:
             print("Invalid input. Please enter a valid number.")
     elif transaction_type == 'withdraw':
         try:
-            amount = float(input("How much would you like to withdraw? $"))
+            amount = float(input("How much would you like to withdraw? R"))
             withdraw(user_accounts, username, amount)
         except ValueError:
             print("Invalid input. Please enter a valid number.")
