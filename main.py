@@ -23,11 +23,12 @@ def create_account(user_accounts, username, initial_balance):
     save_user_accounts(user_accounts)
     print(f"New account created with an initial balance of ${initial_balance}")
 
-# Function to perform a deposit
+# Function to perform a deposit and log the transaction
 def deposit(user_accounts, username, amount):
     if username in user_accounts:
         user_accounts[username] += amount
         save_user_accounts(user_accounts)
+        log_transaction(username, "Deposit", amount)
         print(f"Deposited ${amount}. New balance: ${user_accounts[username]}")
     else:
         print("Account not found. Would you like to create a new account?")
@@ -38,12 +39,13 @@ def deposit(user_accounts, username, amount):
         else:
             print("Transaction canceled.")
 
-# Function to perform a withdrawal
+# Function to perform a withdrawal and log the transaction
 def withdraw(user_accounts, username, amount):
     if username in user_accounts:
         if user_accounts[username] >= amount:
             user_accounts[username] -= amount
             save_user_accounts(user_accounts)
+            log_transaction(username, "Withdrawal", amount)
             print(f"Withdrew ${amount}. New balance: ${user_accounts[username]}")
         else:
             print("Insufficient funds.")
@@ -55,6 +57,11 @@ def withdraw(user_accounts, username, amount):
             create_account(user_accounts, username, initial_balance)
         else:
             print("Transaction canceled.")
+
+# Function to log a transaction
+def log_transaction(username, transaction_type, amount):
+    with open('transactionlog.txt', 'a') as log_file:
+        log_file.write(f"{username},{transaction_type},${amount}\n")
 
 # Main program
 user_accounts = load_user_accounts()
