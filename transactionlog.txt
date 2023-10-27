@@ -1,0 +1,4 @@
+Vuyolwethu,Deposit,$1000.0
+Vuyolwethu,Withdrawal,$1500.0
+Zanele,Withdrawal,$150.0
+Zanele,Withdrawal,$150.0

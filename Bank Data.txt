@@ -1,0 +1,3 @@
+Vuyolwethu,350.0
+Abongile,500.0
+Zanele,700.0
