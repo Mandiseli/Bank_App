@@ -3,7 +3,7 @@ import os
 #
 def load_user_accounts():
     """
-      Function to create or load user accounts
+    Function to create or load user accounts
 
     """
     user_accounts = {}
@@ -72,9 +72,9 @@ user_accounts = load_user_accounts()
 
 while True:
     print("Would you like to make a transaction? (yes or no)")
-    user_response = input().lower()
+    user_answer1 = input().lower()
 
-    if user_response != 'yes':
+    if user_answer1 != 'yes':
         break
 
     print("Would you like to make a deposit or withdrawal? (deposit or withdraw)")

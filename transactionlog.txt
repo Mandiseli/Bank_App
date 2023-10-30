@@ -3,3 +3,6 @@ Vuyolwethu,Withdrawal,$1500.0
 Zanele,Withdrawal,$150.0
 Zanele,Withdrawal,$150.0
 Vuyo,Deposit,R134.0
+Vuyolwethu,Deposit,R1500.0
+Sipho,Withdrawal,R10000.0
+zanele,Deposit,R20.0
