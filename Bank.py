@@ -7,53 +7,44 @@ def load_user_accounts():
         with open('Bank Data.txt', 'r') as file:
             for line in file:
                 account_info = line.strip().split(',')
-                if len(account_info) == 3:
-                    username, password, balance = account_info
-                    try:
-                        user_accounts[username] = {'balance': float(balance), 'password': password}
-                    except ValueError:
-                        print(f"Skipping invalid data: {line}")
-                else:
-                    print("WELCOME TO ONLINE BANKING")
+                username, balance = account_info[0], str(account_info[2])  # Corrected the index for balance
+                user_accounts[username] = balance
     return user_accounts
 
 
 def save_user_accounts(user_accounts):
     with open('Bank Data.txt', 'w') as file:
-        for username, account_info in user_accounts.items():
-            balance = account_info['balance']
-            password = account_info['password']
-            file.write(f"{username},{"Password:", password},{"Balance:", balance}\n")
+        for username, balance in user_accounts.items():
+            file.write(f"{username},{balance}\n")
 
 
-def create_account(user_accounts, username, initial_balance, password):
+def create_account(user_accounts, username, initial_balance, password):  # Added password as a parameter
+    # Check if the username already exists
     if username in user_accounts:
         print("Account already exists. Transaction canceled.")
-    else:
-        user_accounts[username] = {'balance': initial_balance, 'password': password}
-        save_user_accounts(user_accounts)
-        print("==========================================================")
-        print(f"New account created with username: {username} and an initial balance of R{initial_balance}")
-        print("==========================================================")
+        return
+
+    # Save the username, password, and initial balance in 'Bank Data.txt'
+    with open('Bank Data.txt', 'a') as file:
+        file.write(f"{username},{password},{initial_balance}\n")
+
+    print(f"New account created with username: {username} and an initial balance of R{initial_balance}")
+    user_accounts[username] = initial_balance
+
 
 def deposit(user_accounts, username, amount):
     if username in user_accounts:
-        entered_password = input("Enter your password: ")
-        if entered_password == user_accounts[username]['password']:
-            user_accounts[username]['balance'] += amount
-            save_user_accounts(user_accounts)
-            log_transaction(username, "Deposit", amount, user_accounts[username]['balance'])
-            print("=====DEPOSIT=====")
-            print(f"Deposited R{amount}. New balance: R{user_accounts[username]['balance']}")
-            print("=====DEPOSIT=====")
-        else:
-            print("Password doesn't match. Transaction canceled.")
+        # Increment the balance by the deposit amount
+        user_accounts[username] += amount
+        save_user_accounts(user_accounts)
+        log_transaction(username, "Deposit", amount, user_accounts[username])
+        print(f"Deposited R{amount}. New balance: R{user_accounts[username]}")
     else:
         print("Account not found. Would you like to create a new account?")
         create_new_account = input("Enter 'yes' to create a new account: ").lower()
         if create_new_account == 'yes':
             initial_balance = float(input("Enter the initial balance for the new account: R"))
-            password = input("Enter your password: ")
+            password = input("Enter your password: ")  # Added password input
             create_account(user_accounts, username, initial_balance, password)
         else:
             print("Transaction canceled.")
@@ -61,13 +52,12 @@ def deposit(user_accounts, username, amount):
 
 def withdraw(user_accounts, username, amount):
     if username in user_accounts:
-        balance = user_accounts[username]['balance']
-        if balance >= amount:
-            user_accounts[username]['balance'] -= amount
+        if user_accounts[username] >= amount:
+            # Decrement the balance by the withdrawal amount
+            user_accounts[username] -= amount
             save_user_accounts(user_accounts)
-            log_transaction(username, "Withdrawal", amount, user_accounts[username]['balance'])
-            print("======WITHDRAWAL======")
-            print(f"Withdrew R{amount}. New balance: R{user_accounts[username]['balance']}")
+            log_transaction(username, "Withdrawal", amount, user_accounts[username])
+            print(f"Withdrew R{amount}. New balance: R{user_accounts[username]}")
         else:
             print("Insufficient funds.")
     else:
@@ -75,7 +65,7 @@ def withdraw(user_accounts, username, amount):
         create_new_account = input("Enter 'yes' to create a new account: ").lower()
         if create_new_account == 'yes':
             initial_balance = float(input("Enter the initial balance for the new account: R"))
-            password = input("Enter your password: ")
+            password = input("Enter your password: ")  # Added password input
             create_account(user_accounts, username, initial_balance, password)
         else:
             print("Transaction canceled.")
@@ -96,18 +86,18 @@ while True:
     if user_answer1 != 'yes':
         break
 
-    username = input("Enter your account username: ").upper()
+    username = input("Enter your account username: ")
     if username not in user_accounts:
         print(f"Account '{username}' not found.")
         create_new_account = input("Would you like to create a new account? (yes or no)").lower()
         if create_new_account == 'yes':
-            user_password = input("Enter your password: ")
+            user_password = input("Enter your password: ")  # Added password input
             confirm_password = input("Please confirm password: ")
             if user_password != confirm_password:
                 print("Password doesn't match")
                 continue
             initial_balance = float(input("Enter the initial balance for the new account: R"))
-            create_account(user_accounts, username, initial_balance, user_password)
+            create_account(user_accounts, username, initial_balance, user_password)  # Passed the password
         else:
             print("Transaction canceled.")
             continue

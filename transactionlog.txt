@@ -1,8 +1,2 @@
-Vuyolwethu,Deposit,$1000.0
-Vuyolwethu,Withdrawal,$1500.0
-Zanele,Withdrawal,$150.0
-Zanele,Withdrawal,$150.0
-Vuyo,Deposit,R134.0
-Vuyolwethu,Deposit,R1500.0
-Sipho,Withdrawal,R10000.0
-zanele,Deposit,R20.0
+
+ABONGILE,Deposit,R1000.0,Current Balance: R11000.0
