@@ -1,6 +1,0 @@
-Vuyolwethu,1.0
-Abongile,500.0
-Zanele,700.0
-Vuyo,1534.0
-Sipho,2000.0
-zanele,30.0
