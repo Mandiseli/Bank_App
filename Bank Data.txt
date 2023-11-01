@@ -1,1 +1,1 @@
-VUYOLWETHU,('Password:', '212121'),('Balance:', 20000.0)
+VUYOLWETHU,('Password:', '12345'),('Balance:', 1200.0)

@@ -1,2 +1,2 @@
-
-ABONGILE,Deposit,R1000.0,Current Balance: R11000.0
+BAXO,Deposit,R500000.0,Current Balance: R501000.0
+VUYOLWETHU,Deposit,R200.0,Current Balance: R1200.0

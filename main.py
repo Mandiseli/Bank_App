@@ -36,6 +36,18 @@ def create_account(user_accounts, username, initial_balance, password):
         print(f"New account created with username: {username} and an initial balance of R{initial_balance}")
         print("==========================================================")
 
+
+
+def login(username, user_accounts):
+    entered_password = input("Enter your password: ")
+    if entered_password == user_accounts[username]['password']:
+        print("Login successful.")
+        return True
+    else:
+        print("Password doesn't match. Login failed.")
+        return False
+
+
 def deposit(user_accounts, username, amount):
     if username in user_accounts:
         entered_password = input("Enter your password: ")
@@ -60,25 +72,29 @@ def deposit(user_accounts, username, amount):
 
 
 def withdraw(user_accounts, username, amount):
-    if username in user_accounts:
-        balance = user_accounts[username]['balance']
-        if balance >= amount:
-            user_accounts[username]['balance'] -= amount
-            save_user_accounts(user_accounts)
-            log_transaction(username, "Withdrawal", amount, user_accounts[username]['balance'])
-            print("======WITHDRAWAL======")
-            print(f"Withdrew R{amount}. New balance: R{user_accounts[username]['balance']}")
-        else:
-            print("Insufficient funds.")
+    # if username in user_accounts:
+    balance = user_accounts[username]['balance']
+    if balance >= amount:
+        user_accounts[username]['balance'] -= amount
+        save_user_accounts(user_accounts)
+        log_transaction(username, "Withdrawal", amount, user_accounts[username]['balance'])
+        print("======WITHDRAWAL======")
+        print(f"Withdrew R{amount}. New balance: R{user_accounts[username]['balance']}")
     else:
-        print("Account not found. Would you like to create a new account?")
-        create_new_account = input("Enter 'yes' to create a new account: ").lower()
-        if create_new_account == 'yes':
-            initial_balance = float(input("Enter the initial balance for the new account: R"))
-            password = input("Enter your password: ")
-            create_account(user_accounts, username, initial_balance, password)
-        else:
-            print("Transaction canceled.")
+        print("Balance", user_accounts[username]['balance'])
+        print("Insufficient funds,enter less amount less")
+        amount = input()
+        withdraw(user_accounts, username, amount)
+
+    # else:
+    #     print("Account not found. Would you like to create a new account?")
+    #     create_new_account = input("Enter 'yes' to create a new account: ").lower()
+    #     if create_new_account == 'yes':
+    #         initial_balance = float(input("Enter the initial balance for the new account: R"))
+    #         password = input("Enter your password: ")
+    #         create_account(user_accounts, username, initial_balance, password)
+    #     else:
+    #         print("Transaction canceled.")
 
 
 def log_transaction(username, transaction_type, amount, balance):
@@ -86,10 +102,12 @@ def log_transaction(username, transaction_type, amount, balance):
         log_file.write(f"{username},{transaction_type},R{amount},Current Balance: R{balance}\n")
 
 
-# Main program
-user_accounts = load_user_accounts()
+
 
 while True:
+    # Main program
+    user_accounts = load_user_accounts()
+    # print(user_accounts)
     print("Would you like to make a transaction? (yes or no)")
     user_answer1 = input().lower()
 
@@ -111,25 +129,28 @@ while True:
         else:
             print("Transaction canceled.")
             continue
+    else:
+        if login(username, user_accounts):
 
-    print("Would you like to make a deposit or withdrawal? (deposit or withdraw)")
-    transaction_type = input().lower()
+            # user_password = input("Enter your password: ")
+            print("Would you like to make a deposit or withdrawal? (deposit or withdraw)")
+            transaction_type = input().lower()
 
-    if transaction_type != 'deposit' and transaction_type != 'withdraw':
-        print("Invalid transaction type. Please choose 'deposit' or 'withdraw'.")
-        continue
+            if transaction_type != 'deposit' and transaction_type != 'withdraw':
+                print("Invalid transaction type. Please choose 'deposit' or 'withdraw'.")
+                continue
 
-    if transaction_type == 'deposit':
-        try:
-            amount = float(input("How much would you like to deposit? R"))
-            deposit(user_accounts, username, amount)
-        except ValueError:
-            print("Invalid input. Please enter a valid number.")
-    elif transaction_type == 'withdraw':
-        try:
-            amount = float(input("How much would you like to withdraw? R"))
-            withdraw(user_accounts, username, amount)
-        except ValueError:
-            print("Invalid input. Please enter a valid number.")
+        if transaction_type == 'deposit':
+            try:
+                amount = float(input("How much would you like to deposit? R"))
+                deposit(user_accounts, username, amount)
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
+        elif transaction_type == 'withdraw':
+            try:
+                amount = float(input("How much would you like to withdraw? R"))
+                withdraw(user_accounts, username, amount)
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
 
-print("Thank you for using the Bank Application")
+    print("Thank you for using the Bank Application")
