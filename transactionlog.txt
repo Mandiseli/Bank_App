@@ -1,7 +1,0 @@
-ZANELE,Deposit,R1000.0,Current Balance: R2000.0
-ZANELE,Withdrawal,R200.0,Current Balance: R1800.0
-ZANELE,Deposit,R200.0,Current Balance: R2000.0
-ASIPHE,Deposit,R200.0,Current Balance: R400.0
-NAMHLA,Withdrawal,R50.0,Current Balance: R250.0
-NAMHLA,Deposit,R300.0,Current Balance: R550.0
-MADI,Withdrawal,R1000.0,Current Balance: R0.0
