@@ -1,5 +1,10 @@
-ABONGILE,Deposit,R1000.0,Current Balance: R11000.0
-VUYOLWETHU,Withdrawal,R200.0,Current Balance: R800.0
-VUYOLWETHU,Withdrawal,R500.0,Current Balance: R500.0
-ABONGILE,Withdrawal,R500.0,Current Balance: R500.0
-2023-11-02 23:26:09, ABONGILE,Deposit,R1200.0,Current Balance: R1900.0
+2023-11-03 04:05:04, AYA,Deposit,R1000.0,Current Balance: R2000.0
+2023-11-03 04:06:29, LUVO,Withdrawal,R100.08,Current Balance: R1899.92
+2023-11-03 04:11:50, LUVO,Withdrawal,R1300.0,Current Balance: R599.9200000000001
+2023-11-05 22:22:10, VUYOLWETHU,Deposit,R1000.0,Current Balance: R2000.0
+2023-11-05 22:41:18, ZANELE,Deposit,R1000.00,Current Balance: R2000.00
+2023-11-05 22:41:38, ZANELE,Withdrawal,R100.00,Current Balance: R1900.00
+2023-11-05 22:41:48, ZANELE,Withdrawal,R1900.00,Current Balance: R0.00
+2023-11-05 22:48:22, ZANELE,Deposit,R100.00,Current Balance: R100.00
+2023-11-05 22:48:27, ZANELE,Deposit,R100.00,Current Balance: R200.00
+2023-11-05 22:48:33, ZANELE,Withdrawal,R124.00,Current Balance: R76.00

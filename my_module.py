@@ -1,6 +1,7 @@
 import os
 import re
 from datetime import datetime
+import atexit  # Import the atexit module
 
 # Define regex patterns for username and password
 username_pattern = r"^[a-zA-Z0-9_]{3,20}$"
@@ -52,19 +53,15 @@ def create_account(user_accounts, username, initial_balance, password):
 
 def deposit(user_accounts, username, amount):
     if username in user_accounts:
-        entered_password = input("Enter your password: ")
-        if entered_password == user_accounts[username]['password']:
-            if amount > 0:
-                user_accounts[username]['balance'] += amount
-                save_user_accounts(user_accounts)
-                log_transaction(username, "Deposit", amount, user_accounts[username]['balance'])
-                print("=====DEPOSIT=====")
-                print(f"Deposited R{amount}. New balance: R{user_accounts[username]['balance']}")
-                print("=====DEPOSIT=====")
-            else:
-                print("Invalid deposit amount. Amount must be positive.")
+        if amount > 0:
+            user_accounts[username]['balance'] += amount
+            save_user_accounts(user_accounts)
+            log_transaction(username, "Deposit", amount, user_accounts[username]['balance'])
+            print("=====DEPOSIT=====")
+            print(f"Deposited R{amount}. New balance: R{user_accounts[username]['balance']}")
+            print("=====DEPOSIT=====")
         else:
-            print("Password doesn't match. Transaction canceled.")
+            print("Invalid deposit amount. Amount must be positive.")
     else:
         print("Account not found. Would you like to create a new account?")
         create_new_account = input("Enter 'yes' to create a new account: ").lower()
@@ -74,7 +71,6 @@ def deposit(user_accounts, username, amount):
             create_account(user_accounts, username, initial_balance, password)
         else:
             print("Transaction canceled.")
-
 
 
 def withdraw(user_accounts, username, amount):
@@ -105,7 +101,7 @@ def withdraw(user_accounts, username, amount):
 def log_transaction(username, transaction_type, amount, balance):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Get the current timestamp
     with open('transactionlog.txt', 'a') as log_file:
-        log_file.write(f"{timestamp}, {username},{transaction_type},R{amount},Current Balance: R{balance}\n")
+        log_file.write(f"{timestamp}, {username},{transaction_type},R{amount:.2f},Current Balance: R{balance:.2f}\n")
 
 
 def view_transactions(username):
@@ -117,5 +113,10 @@ def view_transactions(username):
                 timestamp, _, transaction_type, amount, current_balance = transaction_info
                 transaction_time = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %H:%M:%S")
                 print(f"Timestamp: {transaction_time}")
-                print(f"{transaction_type}: R{amount}, Current Balance: R{current_balance}")
+                print(f"{transaction_type}: R{amount:.2f}, Current Balance: R{current_balance:.2f}")
         print("===== END OF TRANSACTIONS =====")
+
+
+# Register a function to save user accounts when the program exits
+atexit.register(save_user_accounts)
+
