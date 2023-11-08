@@ -1,5 +1,5 @@
-from my_module import load_user_accounts, is_valid_username, is_valid_password, create_account, deposit, withdraw, \
-    view_transactions
+from my_module import load_user_accounts, is_valid_username, is_valid_password, create_account, deposit, withdraw, suggest_username, view_transactions
+from calculator import calculator
 
 
 def main_menu():
@@ -11,11 +11,12 @@ def main_menu():
 
 def transaction_menu(username, user_accounts):
     print("Current Balance for {}: R{:.2f}".format(username, user_accounts[username]['balance']))
-    print("Would you like to deposit, withdraw, or view transactions?")
+    print("Would you like to deposit, withdraw, or calculate(Bond/Investment)?")
     print("1. Deposit")
     print("2. Withdraw")
-    print("3. View Transactions")
-    print("4. Exit")
+    print("3. Statement")
+    print("4. Invest/Bond")
+    print("5. Exit")
 
 
 # Main program
@@ -34,6 +35,7 @@ if __name__ == "__main__":
                 continue
             if username in user_accounts:
                 print("Username already exists. Please choose another username.")
+                print("Suggestion: ", suggest_username(username))
                 continue
             user_password = input("Enter your password: ")
             if not is_valid_password(user_password):
@@ -68,8 +70,11 @@ if __name__ == "__main__":
                     except ValueError:
                         print("Invalid input. Please enter a valid number.")
                 elif transaction_choice == "3":
-                    view_transactions(username)  # Call view_transactions function
+                    view_transactions(username)
                 elif transaction_choice == "4":
+                    calculator()
+                elif transaction_choice == "5":
+                    break
                     break
         elif choice == "2":
             username = input("Enter your account username: ").strip().upper()
@@ -102,8 +107,10 @@ if __name__ == "__main__":
                     except ValueError:
                         print("Invalid input. Please enter a valid number.")
                 elif transaction_choice == "3":
-                    view_transactions(username)  # Call view_transactions function
+                    view_transactions(username)
                 elif transaction_choice == "4":
+                    calculator()
+                elif transaction_choice == "5":
                     break
         elif choice == "3":
             break

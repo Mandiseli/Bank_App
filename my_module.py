@@ -2,6 +2,9 @@ import os
 import re
 from datetime import datetime
 import atexit  # Import the atexit module
+import random
+import string
+import datetime
 
 # Define regex patterns for username and password
 username_pattern = r"^[a-zA-Z0-9_]{3,20}$"
@@ -51,6 +54,16 @@ def create_account(user_accounts, username, initial_balance, password):
         print("==========================================================")
 
 
+def suggest_username(username):
+    # Generate 2 random characters
+    random_chars = ''.join(random.choice(string.ascii_letters) for _ in range(2))
+
+    # Append the random characters to the original username
+    suggested_username = username + random_chars.upper()
+
+    return suggested_username
+
+
 def deposit(user_accounts, username, amount):
     if username in user_accounts:
         if amount > 0:
@@ -87,6 +100,11 @@ def withdraw(user_accounts, username, amount):
                 print("Invalid withdrawal amount. Amount must be positive.")
         else:
             print("Insufficient funds.")
+            print("Your Balance is R", user_accounts[username]['balance'])
+            amount_str = input("Enter amount? R")
+            amount_str = amount_str.replace(" ", "")  # Remove spaces
+            amount = float(amount_str)
+            withdraw(user_accounts, username, amount)  # Recursive function
     else:
         print("Account not found. Would you like to create a new account?")
         create_new_account = input("Enter 'yes' to create a new account: ").lower()
@@ -99,7 +117,7 @@ def withdraw(user_accounts, username, amount):
 
 
 def log_transaction(username, transaction_type, amount, balance):
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Get the current timestamp
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open('transactionlog.txt', 'a') as log_file:
         log_file.write(f"{timestamp}, {username},{transaction_type},R{amount:.2f},Current Balance: R{balance:.2f}\n")
 
@@ -109,9 +127,13 @@ def view_transactions(username):
         print("===== TRANSACTIONS =====")
         for line in log_file:
             transaction_info = line.strip().split(',')
-            if len(transaction_info) == 5 and transaction_info[1] == username:
+            if len(transaction_info) == 5 and transaction_info[1].strip() == username:
                 timestamp, _, transaction_type, amount, current_balance = transaction_info
-                transaction_time = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %H:%M:%S")
+                amount = float(amount[1:])  # Convert amount to float, excluding the 'R' symbol
+                # Extract the numeric part from current_balance and convert it to float
+                current_balance = float(current_balance[current_balance.index('R') + 1:])
+                transaction_time = datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S").strftime(
+                    "%Y-%m-%d %H:%M:%S")
                 print(f"Timestamp: {transaction_time}")
                 print(f"{transaction_type}: R{amount:.2f}, Current Balance: R{current_balance:.2f}")
         print("===== END OF TRANSACTIONS =====")
@@ -119,4 +141,3 @@ def view_transactions(username):
 
 # Register a function to save user accounts when the program exits
 atexit.register(save_user_accounts)
-
